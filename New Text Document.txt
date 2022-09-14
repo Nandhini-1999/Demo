@@ -1,6 +1,29 @@
-public class myfirstclass{
-public static void main(String[] args)
-{
-            System.out.println(“Hello,World”);
-}
-}
+<form> 
+    <div>Tech Stack : <select name="Tech Stack" id="Techstack" required>
+        <option value="" hidden>Select an option</option>
+        <option value="Java">Java</option>
+        <option value="DotNet">Dotnet</option>
+        <option value="Python">Python</option>
+        <option value="Angular">Angular</option>
+    </select>
+  </div>
+    <div>Sonarqube : <select name="Sonarqube" id="Sonarqube" required>
+        <option value="" hidden>Select an option</option>
+        <option value="True">True</option>
+        <option value="False">False</option>
+    </select></div>  
+    <div>Docker : <select name="Docker" id="Docker" required>
+      <option value="" hidden>Select an option</option>
+      <option value="True">True</option>
+      <option value="False">False</option>
+  </select></div>
+    <div>
+      <label>Github Url</label>
+        <textarea id="GitUrl" name="GitUrl" placeholder="Enter Github Repo url/Path" required></textarea>
+    </div>
+    <div>
+      <label>Git Branch</label>
+        <textarea id="GitBranch" name="GitBranch" placeholder="Enter branch name" required></textarea>
+    </div>
+    <button (click)="saveFile()"> Submit </button>
+    </form>
