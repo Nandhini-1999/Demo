@@ -1,0 +1,5 @@
+ Techstack: Java 
+ Docker: True 
+ Sonarqube: False 
+ GitUrl: Url  
+ GitBranch: Test
