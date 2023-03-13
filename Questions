@@ -1,0 +1,229 @@
+HTML
+
+1. What's the difference between an "attribute" and a "property" in HTML?  
+Answer
+Attributes are defined on the HTML markup but properties are defined on the DOM. To illustrate the difference, 
+imagine we have this text field in our HTML: <input type="text" value="Hello">.
+const input = document.querySelector('input');
+console.log(input.getAttribute('value')); // Hello
+console.log(input.value); // Hello
+But after you change the value of the text field by adding "World!" to it, this becomes:
+console.log(input.getAttribute('value')); // Hello
+console.log(input.value); // Hello World!
+
+
+2. What are some of the key new features in HTML5?
+Answer
+Key new features of HTML5 include:
+
+Improved support for embedding graphics, audio, and video content via the new <canvas>, <audio>, and <video> tags.
+
+Extensions to the JavaScript API such as geolocation and drag-and-drop as well for storage and caching.
+
+Introduction of “web workers”.
+
+Several new semantic tags were also added to complement the structural logic of modern web applications. These include 
+the <main>, <nav>, <article>, <section>, <header>, <footer>, and <aside> tags.
+
+New form controls, such as <calendar>, <date>, <time>, <email>, <url>, and <search>.
+
+
+3. Can a <section> contain <article> elements? Can an <article> contain <section> elements? Provide usage examples.
+Answer
+The answer to both questions is yes; i.e., a <section> can contain <article> elements, and an <article> can contain <section> elements.
+
+For example, a personal dashboard page might contain a <section> for social network interactions as well as a <section> for the latest news 
+articles, the latter of which could contain several <article> elements.
+
+Conversely, an <article> might contain a <section> at the end for reader comments.
+
+
+4. What’s the difference between the <svg> and <canvas> elements?
+Answer
+The <svg> element is a container for SVG graphics. SVG has several methods for drawing paths, boxes, circles, text, and even bitmap images.
+
+SVG is a language for describing 2D graphics, but <canvas> allows you to draw 2D graphics on the fly using JavaScript.
+
+SVG is XML-based, which means that every element is available within the SVG DOM. You can attach JavaScript event handlers for an element.
+
+In SVG, each drawn shape is remembered as an object. If attributes of an SVG object are changed, the browser can automatically re-render the shape.
+
+Canvas is rendered pixel by pixel. In canvas, once the graphic is drawn, it is forgotten by the browser. If its position should be changed, 
+the entire scene needs to be redrawn, including any objects that might have been covered by the graphic.
+
+
+5. How to optimize website assets loading?
+Answer
+To optimize website load time we need to optimize its asset loading and for that:
+
+CDN hosting - A CDN or content delivery network is geographically distributed servers to help reduce latency.
+File compression - This is a method that helps to reduce the size of an asset to reduce the data transfer
+File concatenation - This reduces the number of HTTP calls
+Minify scripts - This reduces the overall file size of js and CSS files
+Parallel downloads - Hosting assets in multiple subdomains can help to bypass the download limit of 6 assets per domain of all modern browsers. 
+This can be configured but most general users never modify these settings.
+Lazy Loading - Instead of loading all the assets at once, the non-critical assets can be loaded on a need basis
+
+
+6. What is the difference between “display: none” and “visibility: hidden”, when used as attributes to the HTML element.
+Answer
+When we use the attribute “visibility: hidden” for an HTML element then that element will be hidden from the webpage but still takes up space. 
+Whereas, if we use the “display: none” attribute for an HTML element then the element will be hidden, and also it won’t take up any space on the webpage.
+
+
+
+
+CSS
+
+1. Define z-index.
+Answer
+Z-index is used to specify the stack order of elements that overlap each other. Its default value is zero and can take both negative and positive values. 
+A higher z-index value is stacked above the lower index element. It takes the following values- auto, number, initial, and inherit. 
+
+
+2. Tell us about the property used for image scroll controlling?
+Answer
+The background-attachment property is used to set whether the background image is fixed or it scrolls with the rest of the page. Example for a fixed 
+background-image:
+
+body {
+
+  background-image: url(‘url_of_image’);
+
+  background-repeat: no-repeat;
+
+  background-attachment: fixed;
+
+}
+
+
+3. How do you specify units in the CSS? What are the different ways to do it?
+Answer
+There are mainly four different units in the CSS that are px, em, pt, and percentage (%).
+
+Px (Pixel) is used for fine-grained control and alignment and not cascade. To get it sharp, we can use 1px or multiple of px.
+Em is used to maintain relative size and responsive fonts. 1em = 16px having also the same font size. It is advisable to set the font size to 10px 
+in common practice.
+Pt (point) is a fixed-size unit that is used in print. 1pt = 1/72 inch.
+Percentage (%) is used to set the font size with respect to the font size of the body. Thus, it is necessary to set the reasonable font size of the body.
+
+
+4. What is meant by CSS working under the hood?
+Answer
+When a browser displays a document, it combines style information and document content. The document is processed in two stages:
+
+Conversion of HTML and CSS into Document Object Model
+DOM displays contents of browser
+
+
+5. What are mixins?
+Answer
+A mixin is similar to a function block of code returning a single value—mixin output lines of Sass code that directly compiles into CSS styles. At the same 
+time, the function returns a value that becomes the value for a CSS property or something that can be passed to another mixin.
+
+
+6. Differentiate between the use of ID selector and class selector.
+Answer
+ID Selector:
+<style>
+{
+text-align: right;
+color: blue;
+}
+</style>
+
+CSS class Selector: 
+<style>
+.right {
+text-align: right;
+color: blue;
+}
+</style>
+
+
+
+JS
+
+1. Explain Hoisting in javascript.
+Answer
+Hoisting is the default behaviour of javascript where all the variable and function declarations are moved on top.
+This means that irrespective of where the variables and functions are declared, they are moved on top of the scope. The scope can be both local and global.
+
+
+2. Difference between “ == “ and “ === “ operators with an example.
+Answer
+Both are comparison operators. The difference between both the operators is that “==” is used to compare values whereas, “ === “ is used to compare both 
+values and types.
+
+Example:
+var x = 2;
+var y = "2";
+(x == y)  // Returns true since the value of both x and y is the same
+(x === y) // Returns false since the typeof x is "number" and typeof y is "string"
+
+
+3. In JavaScript, how do you turn an Object into an Array []?
+Answer
+let obj = { id: "1", name: "user22", age: "26", work: "programmer" };
+
+//Method 1: Convert the keys to Array using - Object.keys()
+console.log(Object.keys(obj));
+// ["id", "name", "age", "work"]
+
+// Method 2 Converts the Values to Array using - Object.values()
+console.log(Object.values(obj));
+// ["1", "user22r", "26", "programmer"]
+
+// Method 3 Converts both keys and values using - Object.entries()
+console.log(Object.entries(obj));
+//[["id", "1"],["name", "user22"],["age", "26"],["work", “programmer"]]
+
+
+4. Guess the output of the following code:
+var x = 23;
+(function(){
+  var x = 43;
+  (function random(){
+    x++;
+    console.log(x);
+    var x = 21;
+  })();
+})(); 
+
+Answer
+Output is NaN.
+random() function has functional scope since x is declared and hoisted in the functional scope.
+Rewriting the random function will give a better idea about the output:
+function random(){
+  var x; // x is hoisted
+  x++; // x is not a number since it is not initialized yet
+  console.log(x); // Outputs NaN
+  x = 21; // Initialization of x
+}
+
+
+5. Write a function that performs binary search on a sorted array.
+Answer
+function binarySearch(arr,value,startPos,endPos){
+  if(startPos > endPos) return -1;
+
+  let middleIndex = Math.floor(startPos+endPos)/2;
+
+  if(arr[middleIndex] === value) return middleIndex;
+
+  elsif(arr[middleIndex > value]){
+    return binarySearch(arr,value,startPos,middleIndex-1);
+  }
+  else{
+    return binarySearch(arr,value,middleIndex+1,endPos);
+  }
+}
+
+
+6. Is JavaScript a pass-by-reference or pass-by-value language?
+Answer
+The variable's data is always a reference for objects, hence it's always pass by value. As a result, if you supply an object and alter its members 
+inside the method, the changes continue outside of it. It appears to be pass by reference in this case. However, if you modify the values of the object variable, 
+the change will not last, demonstrating that it is indeed passed by value.
+
+
