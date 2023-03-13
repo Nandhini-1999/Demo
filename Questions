@@ -501,3 +501,56 @@ ReactDOM.render(<App />, document.getElementById("root"));
 Answer
 Synthetic events combine the response of different browser's native events into one API, ensuring that the events are consistent across different browsers.
 The application is consistent regardless of the browser it is running in. Here, preventDefault is a synthetic event.
+
+
+
+
+Redux
+
+1. Difference between Redux and Flux
+Answer
+REDUX:
+Redux includes a single Store per application. Rather than placing state information in multiple Stores across the app, 
+Redux keeps everything in one region of the application.
+Redux is an open-source JavaScript library used for creating User Interfaces.
+In Redux, the business logic of the application resides in the Reducer.
+FLUX:
+Flux includes multiple Stores per application.
+Flux's architecture is designed to build client-side web apps.
+In Flux, the business logic of the application resides in the Store.
+
+
+2. What are the workflow features in Redux?
+Answer
+The workflow features in Redux are as follows:
+
+Reset: The state of the store is allowed to be reset.
+Revert: Revert or Rollback to the last committed state is allowed.
+Sweep: Every disabled action which we have fired unintentionally will be removed.
+Commit: The current state is made the initial state
+
+
+3. Differentiate between Relay and Redux.
+Answer
+RELAY:
+The state originating from the server is taken care of by Relay.
+Relay can be used for caching and optimizing the data.
+REDUX:
+All the states of the application are taken care of by Redux.
+Redux is not responsible for handling data fetching (it can be done manually though).
+
+
+4. What are the differences between redux-saga and redux-thunk?
+Answer
+Both Redux Thunk and Redux Saga take care of dealing with side effects. In most of the scenarios, 
+Thunk allows Promises to deal with them, whereas Saga uses Generators.
+Thunk is simple to use and Promises are familiar to many developers, Saga/Generators are more powerful 
+but you will need to learn them. But both the two middleware can coexists, so you can start with Thunks and introduce Sagas when/if you need them.
+
+
+5. How to add multiple middlewares to Redux and give an example?
+For adding multiple middlewares to Redux, you can use applyMiddleware by which the developer can pass each piece of middleware as the new or another argument. As per your preferences, you just need to pass every single piece of middleware.
+For instance, one can add the Redux Thunk and the logger middleware as the argument just as below:
+Example
+import { createStore, applyMiddleware } from 'redux'
+const createStoreWithMiddleware = applyMiddleware(ReduxThunk, logger)(createStore);
