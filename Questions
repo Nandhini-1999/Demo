@@ -227,3 +227,277 @@ inside the method, the changes continue outside of it. It appears to be pass by 
 the change will not last, demonstrating that it is indeed passed by value.
 
 
+REACT
+
+1. How to pass data between react components?
+Answer
+Parent Component to Child Component (using props)
+
+With the help of props, we can send data from a parent to a child component.
+
+How do we do this?
+
+Consider the following Parent Component:
+
+import ChildComponent from "./Child";
+   function ParentComponent(props) {
+    let [counter, setCounter] = useState(0);
+   
+    let increment = () => setCounter(++counter);
+   
+    return (
+      <div>
+        <button onClick={increment}>Increment Counter</button>
+        <ChildComponent counterValue={counter} />
+      </div>
+    );
+   }
+As one can see in the code above, we are rendering the child component inside the parent component, by providing a prop called counterValue. The value of the counter is being passed from the parent to the child component.
+
+We can use the data passed by the parent component in the following way:
+
+function ChildComponent(props) {
+return (
+  <div>
+    <p>Value of counter: {props.counterValue}</p>
+  </div>
+);
+}
+We use the props.counterValue to display the data passed on by the parent component.
+
+Child Component to Parent Component (using callbacks)
+
+This one is a bit tricky. We follow the steps below:
+
+Create a callback in the parent component which takes in the data needed as a parameter.
+Pass this callback as a prop to the child component.
+Send data from the child component using the callback.
+We are considering the same example above but in this case, we are going to pass the updated counterValue from child to parent.
+
+Step1 and Step2: Create a callback in the parent component, pass this callback as a prop.
+
+function ParentComponent(props) {
+let [counter, setCounter] = useState(0);
+let callback = valueFromChild => setCounter(valueFromChild);
+return (
+  <div>
+    <p>Value of counter: {counter}</p>
+    <ChildComponent callbackFunc={callback} counterValue={counter} />
+  </div>
+);
+}
+As one can see in the code above, we created a function called callback which takes in the data received from the child component as a parameter.
+
+Next, we passed the function callback as a prop to the child component.
+
+Step3: Pass data from the child to the parent component.
+
+function ChildComponent(props) {
+let childCounterValue = props.counterValue;
+return (
+  <div>
+    <button onClick={() => props.callbackFunc(++childCounterValue)}>
+      Increment Counter
+    </button>
+  </div>
+);
+}
+In the code above, we have used the props.counterValue and set it to a variable called childCounterValue.
+
+Next, on button click, we pass the incremented childCounterValue to the props.callbackFunc.
+
+This way, we can pass data from the child to the parent component. 
+
+
+2. What are Higher Order Components?
+Answer
+Simply put, Higher-Order Component(HOC) is a function that takes in a component and returns a new component. 
+
+
+When do we need a Higher Order Component?
+
+While developing React applications, we might develop components that are quite similar to each other with minute differences. In most cases, developing similar components might not be an issue but, while developing larger applications we need to keep our code DRY, therefore, we want an abstraction that allows us to define this logic in a single place and share it across components. HOC allows us to create that abstraction.
+
+Example of a HOC:
+
+Consider the following components having similar functionality. The following component displays the list of articles:
+
+// "GlobalDataSource" is some global data source
+class ArticlesList extends React.Component {
+ constructor(props) {
+   super(props);
+   this.handleChange = this.handleChange.bind(this);
+   this.state = {
+     articles: GlobalDataSource.getArticles(),
+   };
+ }
+ componentDidMount() {
+   // Listens to the changes added
+   GlobalDataSource.addChangeListener(this.handleChange);
+ }
+ componentWillUnmount() {
+   // Listens to the changes removed
+   GlobalDataSource.removeChangeListener(this.handleChange);
+ }
+ handleChange() {
+   // States gets Update whenver data source changes
+   this.setState({
+     articles: GlobalDataSource.getArticles(),
+   });
+ }
+ render() {
+   return (
+     <div>
+       {this.state.articles.map((article) => (
+         <ArticleData article={article} key={article.id} />
+       ))}
+     </div>
+   );
+ }
+}
+The following component displays the list of users:
+
+// "GlobalDataSource" is some global data source
+class UsersList extends React.Component {
+ constructor(props) {
+   super(props);
+   this.handleChange = this.handleChange.bind(this);
+   this.state = {
+     users: GlobalDataSource.getUsers(),
+   };
+ }
+ componentDidMount() {
+   // Listens to the changes added
+   GlobalDataSource.addChangeListener(this.handleChange);
+ }
+ componentWillUnmount() {
+   // Listens to the changes removed
+   GlobalDataSource.removeChangeListener(this.handleChange);
+ }
+ handleChange() {
+   // States gets Update whenver data source changes
+   this.setState({
+     users: GlobalDataSource.getUsers(),
+   });
+ }
+ render() {
+   return (
+     <div>
+       {this.state.users.map((user) => (
+         <UserData user={user} key={user.id} />
+       ))}
+     </div>
+   );
+ }
+}
+Notice the above components, both have similar functionality but, they are calling different methods to an API endpoint.
+
+Let’s create a Higher Order Component to create an abstraction:
+
+// Higher Order Component which takes a component
+// as input and returns another component
+// "GlobalDataSource" is some global data source
+function HOC(WrappedComponent, selectData) {
+ return class extends React.Component {
+   constructor(props) {
+     super(props);
+     this.handleChange = this.handleChange.bind(this);
+     this.state = {
+       data: selectData(GlobalDataSource, props),
+     };
+   }
+   componentDidMount() {
+     // Listens to the changes added
+     GlobalDataSource.addChangeListener(this.handleChange);
+   }
+   componentWillUnmount() {
+     // Listens to the changes removed
+     GlobalDataSource.removeChangeListener(this.handleChange);
+   }
+   handleChange() {
+     this.setState({
+       data: selectData(GlobalDataSource, this.props),
+     });
+   }
+   render() {
+     // Rendering the wrapped component with the latest data data
+     return <WrappedComponent data={this.state.data} {...this.props} />;
+   }
+ };
+}
+We know HOC is a function that takes in a component and returns a component.
+
+In the code above, we have created a function called HOC which returns a component and performs functionality that can be shared across both the ArticlesList component and UsersList Component.
+
+The second parameter in the HOC function is the function that calls the method on the API endpoint.
+
+We have reduced the duplicated code of the componentDidUpdate and componentDidMount functions.
+
+Using the concept of Higher-Order Components, we can now render the ArticlesList and UsersList components in the following way:
+
+const ArticlesListWithHOC = HOC(ArticlesList, (GlobalDataSource) => GlobalDataSource.getArticles());
+const UsersListWithHOC = HOC(UsersList, (GlobalDataSource) => GlobalDataSource.getUsers());
+Remember, we are not trying to change the functionality of each component, we are trying to share a single functionality across multiple components using HOC.
+
+
+3. 2 way data binding in ReactJS
+Answer
+function App() {
+  const [value, setValue] = React.useState("");
+
+  return (
+    <>
+      <input
+        type="text"
+        placeholder="Enter Text"
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+      <p>{value}</p>
+    </>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
+
+
+4. Show/Hide Element on Screen
+Answer
+function App() {
+  const [show, setShow] = React.useState(true);
+
+  return (
+    <>
+      <button onClick={() => setShow(!show)}>
+        {show ? "Hide Element Below" : "Show Element Below"}
+      </button>
+
+      {show && <div>Toggle Challenge</div>}
+    </>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById("root"));
+
+
+5. Create Counter App 
+Answer
+const App = () => {
+  const [counter, setCounter] = React.useState(0);
+
+  return (
+    <div>
+      <h2>Counter: {counter}</h2>
+      <button onClick={() => setCounter(counter + 1)}>Increment</button>
+      <button onClick={() => setCounter(counter - 1)}>Decrement</button>
+    </div>
+  );
+};
+
+ReactDOM.render(<App />, document.getElementById("root"));
+
+
+6. What are synthetic events in React?
+Answer
+Synthetic events combine the response of different browser's native events into one API, ensuring that the events are consistent across different browsers.
+The application is consistent regardless of the browser it is running in. Here, preventDefault is a synthetic event.
